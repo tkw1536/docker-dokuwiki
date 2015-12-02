@@ -3,16 +3,41 @@ MAINTAINER Hearst Automation Team <atat@hearst.com>
 
 ENV DOKU_HOME /opt/dokuwiki
 
-# Update & install packages
-RUN apk --update add \
+RUN apk update
+
+# Setup and install base components
+RUN apk add \
     bash \
     wget \
     tar \
-    lighttpd \
-    php-cgi \
-    php-gd \
-    php-xml \
+    gzip \
+    curl \
+    lighttpd
+
+# Install all needed php packages
+RUN apk add \
+    php-common \
+    php-zlib \
     php-openssl \
+    php-iconv \
+    php-json \
+    php-gd \
+    php-curl \
+    php-xml \
+    php-pgsql \
+    php-imap \
+    php-cgi \
+    fcgi \
+    php-pdo \
+    php-pdo_pgsql \
+    php-soap \
+    php-xmlrpc \
+    php-posix \
+    php-mcrypt \
+    php-gettext \
+    php-ldap \
+    php-ctype \
+    php-dom \
     && rm -rf /var/cache/apk/*
 
 RUN mkdir -p $DOKU_HOME
@@ -21,13 +46,14 @@ WORKDIR $DOKU_HOME
 
 # Download dokuwiki
 RUN wget -O $DOKU_HOME/dokuwiki.tgz \
-	"http://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz"
+    "http://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz"
 
 # Ignore internal folder name, just extract the good bits
 RUN tar -zxf dokuwiki.tgz --strip-components=1
 
 # Set ownership and access
 RUN chmod -R 755 $DOKU_HOME /var/log/lighttpd
+RUN chmod -R 777 $DOKU_HOME
 RUN chown -R lighttpd:lighttpd $DOKU_HOME /var/log/lighttpd /var/run/lighttpd
 
 # Run cgi fix
