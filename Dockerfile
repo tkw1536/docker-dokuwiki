@@ -1,74 +1,28 @@
-FROM alpine:edge
-MAINTAINER Hearst Automation Team <atat@hearst.com>
+FROM alpine:3.7
+LABEL maintainer Tom Wiesing <tom@tkw01536.de>
 
-ENV DOKU_HOME /opt/dokuwiki
 
-RUN apk update
+RUN apk add --no-cache \
+    bash wget tar gzip curl lighttpd \
+    php7-common php7-session php7-zlib php7-openssl php7-iconv php7-json php7-gd php7-curl php7-xml php7-pgsql php7-imap php7-cgi fcgi php7-pdo php7-pdo_pgsql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom
 
-# Setup and install base components
-RUN apk add \
-    bash \
-    wget \
-    tar \
-    gzip \
-    curl \
-    lighttpd
-
-# Install all needed php packages
-RUN apk add \
-    php-common \
-    php-zlib \
-    php-openssl \
-    php-iconv \
-    php-json \
-    php-gd \
-    php-curl \
-    php-xml \
-    php-pgsql \
-    php-imap \
-    php-cgi \
-    fcgi \
-    php-pdo \
-    php-pdo_pgsql \
-    php-soap \
-    php-xmlrpc \
-    php-posix \
-    php-mcrypt \
-    php-gettext \
-    php-ldap \
-    php-ctype \
-    php-dom \
-    && rm -rf /var/cache/apk/*
-
-RUN mkdir -p $DOKU_HOME
-
-WORKDIR $DOKU_HOME
+RUN mkdir -p /opt/dokuwiki
+WORKDIR /opt/dokuwiki
 
 # Download dokuwiki
-RUN wget -O $DOKU_HOME/dokuwiki.tgz \
-    "http://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz"
-
-# Ignore internal folder name, just extract the good bits
-RUN tar -zxf dokuwiki.tgz --strip-components=1
-
-# Set ownership and access
-RUN chmod -R 755 $DOKU_HOME /var/log/lighttpd
-RUN chmod -R 777 $DOKU_HOME
-RUN chown -R lighttpd:lighttpd $DOKU_HOME /var/log/lighttpd /var/run/lighttpd
-
-# Run cgi fix
-RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/php.ini
-
+RUN wget -O dokuwiki.tgz "http://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz" \
+    && tar -zxf dokuwiki.tgz --strip-components=1 && rm dokuwiki.tgz \
+    && mkdir /var/run/lighttpd \
+    && chmod -R 755 /opt/dokuwiki /var/log/lighttpd && chmod -R 777 /opt/dokuwiki && chown -R lighttpd:lighttpd /opt/dokuwiki /var/log/lighttpd /var/run/lighttpd \
+    && sed -i -e "s/display_errors = Off/display_errors = On/g" /etc/php7/php.ini
+    
 # Configure lighttpd
 ADD lighttpd.conf /etc/lighttpd/lighttpd.conf
 
-# Cleanup
-RUN rm dokuwiki.tgz
-
 EXPOSE 80
-VOLUME $DOKU_HOME/data
-VOLUME $DOKU_HOME/lib/plugins
-VOLUME $DOKU_HOME/conf
-VOLUME $DOKU_HOME/lib/tpl
+VOLUME /opt/dokuwiki/data
+VOLUME /opt/dokuwiki/lib/plugins
+VOLUME /opt/dokuwiki/conf
+VOLUME /opt/dokuwiki/lib/tpl
 
 ENTRYPOINT ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
