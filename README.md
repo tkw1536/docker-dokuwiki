@@ -1,5 +1,7 @@
 # tkw01536/alpine-dokuwiki
 
+![CI Status](https://github.com/tkw1536/docker-dokuwiki/workflows/Publish Docker Image/badge.svg)
+
 This is an automated build, and a fork of [the original project](https://github.com/HearstAT/docker-alpinedokuwiki) to incoperate changes needed for recent DokuWiki versions. 
 
 It uses the Alpine image and sets up a container with [dokuwiki](https://www.dokuwiki.org/) installed. 
@@ -20,18 +22,20 @@ Follows build instructions similar to the [Alpine Wiki](http://wiki.alpinelinux.
 
 # Usage
 
+This image is available on the [GitHub Package Registry](https://github.com/tkw1536/docker-dokuwiki/packages/469551).
+
 ```
-docker run -p 80:80 tkw01536/dokuwiki
+docker run -p 80:80 docker.pkg.github.com/tkw1536/docker-dokuwiki/dokuwiki:latest
 ```
 
 This will store the workspace in /opt/dokuwiki/data. You will probably want to make that a persistent volume (recommended):
 
 ```
-docker run -p 80:80 -v /you/path:/opt/dokuwiki/data tkw01536/dokuwiki
+docker run -p 80:80 -v /you/path:/opt/dokuwiki/data docker.pkg.github.com/tkw1536/docker-dokuwiki/dokuwiki:latest
 ```
 
 or only mount the plugins folder
 
 ```
-docker run -p 80:80 -v /you/path:/opt/dokuwiki/lib/plugins tkw01536/dokuwiki
+docker run -p 80:80 -v /you/path:/opt/dokuwiki/lib/plugins docker.pkg.github.com/tkw1536/docker-dokuwiki/dokuwiki:latest
 ```
