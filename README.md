@@ -1,6 +1,6 @@
 # tkw01536/alpine-dokuwiki
 
-![CI Status](https://github.com/tkw1536/docker-dokuwiki/workflows/Publish Docker Image/badge.svg)
+![CI Status](https://github.com/tkw1536/docker-dokuwiki/workflows/Publish%20Docker%20Image/badge.svg)
 
 This is an automated build, and a fork of [the original project](https://github.com/HearstAT/docker-alpinedokuwiki) to incoperate changes needed for recent DokuWiki versions. 
 
