@@ -22,20 +22,20 @@ Follows build instructions similar to the [Alpine Wiki](http://wiki.alpinelinux.
 
 # Usage
 
-This image is available on the [GitHub Package Registry](https://github.com/tkw1536/docker-dokuwiki/packages/469551).
+This image is available on the [GitHub Package Registry](ghcr.io/tkw1536/docker-dokuwiki/dokuwiki).
 
 ```
-docker run -p 80:80 docker.pkg.github.com/tkw1536/docker-dokuwiki/dokuwiki:latest
+docker run -p 80:80 ghcr.io/tkw1536/docker-dokuwiki/dokuwiki:latest
 ```
 
 This will store the workspace in /opt/dokuwiki/data. You will probably want to make that a persistent volume (recommended):
 
 ```
-docker run -p 80:80 -v /you/path:/opt/dokuwiki/data docker.pkg.github.com/tkw1536/docker-dokuwiki/dokuwiki:latest
+docker run -p 80:80 -v /you/path:/opt/dokuwiki/data ghcr.io/tkw1536/docker-dokuwiki/dokuwiki:latest
 ```
 
 or only mount the plugins folder
 
 ```
-docker run -p 80:80 -v /you/path:/opt/dokuwiki/lib/plugins docker.pkg.github.com/tkw1536/docker-dokuwiki/dokuwiki:latest
+docker run -p 80:80 -v /you/path:/opt/dokuwiki/lib/plugins ghcr.io/tkw1536/docker-dokuwiki/dokuwiki:latest
 ```
