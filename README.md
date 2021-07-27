@@ -22,7 +22,7 @@ Follows build instructions similar to the [Alpine Wiki](http://wiki.alpinelinux.
 
 # Usage
 
-This image is available on the [GitHub Package Registry](ghcr.io/tkw1536/docker-dokuwiki/dokuwiki).
+This image is available on the [GitHub Package Registry](https://ghcr.io/tkw1536/docker-dokuwiki/dokuwiki).
 
 ```
 docker run -p 80:80 ghcr.io/tkw1536/docker-dokuwiki/dokuwiki:latest
